@@ -11,93 +11,135 @@
     <!-- Connects to the CSS file. Flask's (The SQL) url_for automatically finds the css/ folder -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="auth-page">
 
-    <!-- top header for the brand logo area and main page heading -->
-    <div class="header-top">
-        <!-- holds placeholder text and box for the site logo -->
-        <div class="logo-container">
-            <div class="logo-label">Logo Name</div>
-            <div class="logo-box">[ Image ]</div>
+    <div class="auth-shell">
+
+        <!-- top header for the brand logo area and main page heading -->
+        <div class="header-top">
+            <!-- holds placeholder text and box for the site logo -->
+            <a href="/" style="text-decoration: none; color: inherit;">
+                <div class="logo-container">
+                    <div class="logo-box">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" onerror="this.innerText='CashFlow'">
+                    </div>
+                </div>
+            </a>
+            <!-- main page header text -->
+            <h1 class="header-title">Login/Create an Account</h1>
+            <div class="header-spacer" aria-hidden="true"></div>
         </div>
-        <!-- main page header text -->
-        <h1 class="header-title">Login/Create an Account</h1>
+
+        <!-- navigation bar for the planned pages *removed the transaction log page and changed about us to Overveiw* -->
+        <nav class="navbar" aria-label="Main navigation">
+            <a class="nav-block active" href="/auth">Login/Create an account</a>
+            <a class="nav-block" href="/#about">Overview</a>
+            <a class="nav-block" href="/dashboard">Budget Tracker</a>
+        </nav>
+
+        <!-- display if SQL (app.py) sends back a success or error message.
+             The class '{{ status }}' adds 'success' (green) or 'error' (red) based on the result. -->
+        {% if message %}
+        <div class="alert {{ status }}">{{ message }}</div>
+        {% endif %}
+
+        <!-- Ming Xiao (login and sign up form) & john ortega (added Flip Card Scaffolding and Form Integration) -->   
+        <!-- main body flexbox container placing the login and create acount cards side-by-side -->
+        <main class="main-content">
+
+            <!-- Create an account flip card (left box) -->
+            <div class="flip-card">
+                <div class="flip-inner">
+                    <!-- Front: Tails Coin -->
+                    <div class="flip-face">
+                        <img src="{{ url_for('static', filename='Tails.jpg') }}" alt="Tails Coin" class="coin">
+                        <p class="coin-caption">Create an Account</p>
+                        <button type="button" class="flip-btn" onclick="this.closest('.flip-card').classList.add('is-flipped')">Sign Up</button>
+                    </div>
+
+                    <!-- Back: Sign Up Form -->
+                    <div class="flip-face flip-back">
+                        <div class="auth-box">
+                            <h2>Sign Up</h2>
+                            <!-- method="POST" -> sends input data to the backend route (/auth) -->
+                            <form method="POST" action="/auth">
+                                <!-- Hidden input tells app.py which form was submitted ('signup' vs 'login') -->
+                                <input type="hidden" name="action" value="signup">
+
+                                <!-- username field -->
+                                <div class="form-group">
+                                    <label>Create a Username</label>
+                                    <!-- 'name="username"' key for python to read using request.form.get('username') -->
+                                    <!-- 'required' stops submission if the field is blank -->
+                                    <input type="text" name="username" required>
+                                </div>
+
+                                <!-- password field -->
+                                <div class="form-group">
+                                    <label>Create a Password</label>
+                                    <!-- 'type="password"' hides characters with dots -->
+                                    <input type="password" name="password" required>
+                                </div>
+
+                                <!-- triggers form submission to the backend -->
+                                <button type="submit" class="submit-btn">Sign Up</button>
+                            </form>
+                            <button type="button" class="flip-btn ghost" onclick="this.closest('.flip-card').classList.remove('is-flipped')">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login to account flip card (right box) -->
+            <div class="flip-card">
+                <div class="flip-inner">
+                    <!-- Front: Heads Coin -->
+                    <div class="flip-face">
+                        <img src="{{ url_for('static', filename='Heads.jpg') }}" alt="Heads Coin" class="coin">
+                        <p class="coin-caption">Log In</p>
+                        <button type="button" class="flip-btn" onclick="this.closest('.flip-card').classList.add('is-flipped')">Log In</button>
+                    </div>
+
+                    <!-- Back: Log In Form -->
+                    <div class="flip-face flip-back">
+                        <div class="auth-box">
+                            <h2>Log In</h2>
+                            <form method="POST" action="/auth">
+                                <!-- Tells app.py to run the SELECT check instead of the INSERT query -->
+                                <input type="hidden" name="action" value="login">
+
+                                <!-- Login username field -->
+                                <div class="form-group">
+                                    <label>Enter Username</label>
+                                    <input type="text" name="username" required>
+                                </div>
+
+                                <!-- Field to enter password -->
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="password" name="password" required>
+                                </div>
+
+                                <button type="submit" class="submit-btn">Log In</button>
+                            </form>
+                            <button type="button" class="flip-btn ghost" onclick="this.closest('.flip-card').classList.remove('is-flipped')">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Empty bar matching the bottom border of the wireframe -->
+        <footer>
+            <section id="about" style="padding: 24px 20px; text-align: center; border-top: 1px solid var(--line); margin-top: 20px;">
+                <p style="color: var(--text-muted); font-size: 13px; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+                    CashFlow is a personal finance tracker designed to monitor spending trends, log daily income and expenses, and maintain category budgets.
+                </p>
+            </section>
+        </footer>
+
     </div>
-
-    <!-- navigation bar for the 4 planned pages -->
-    <nav class="navbar">
-        <a href="/auth">Login/Create an account</a>
-        <!-- The '#' means these links don't lead anywhere yet until other pages are built -->
-        <a href="#">About Us</a>
-        <a href="#">Budget Tracker</a>
-        <a href="#">Transactions Logs</a>
-    </nav>
-
-    <!-- display if SQL (app.py) sends back a success or error message.
-         The class '{{ status }}' adds 'success' (green) or 'error' (red) based on the result. -->
-    {% if message %}
-    <div class="alert {{ status }}">{{ message }}</div>
-    {% endif %}
-
-    <!-- Ming Xiao(lines 42-103) -->   
-    <!-- main body flexbox container placing the login and create acount cards side-by-side -->
-    <main class="main-content">
-
-        <!--  Create an account page(left box) -->
-        <div class="auth-box">
-            <h2>Sign Up</h2>
-            <!-- method="POST" -> sends input data to the backend route (/auth) -->
-            <form method="POST" action="/auth">
-                <!-- Hidden input tells app.py which form was submitted ('signup' vs 'login') -->
-                <input type="hidden" name="action" value="signup">
-
-                <!-- username field -->
-                <div class="form-group">
-                    <label>Create a Username</label>
-                    <!-- 'name="username"' is the key Python reads using request.form.get('username') -->
-                    <!-- 'required' stops submission if the field is blank -->
-                    <input type="text" name="username" required>
-                </div>
-
-                <!-- password field -->
-                <div class="form-group">
-                    <label>Create a Password</label>
-                    <!-- 'type="password"' hides characters with dots -->
-                    <input type="password" name="password" required>
-                </div>
-
-                <!-- triggers form submission to the backend -->
-                <button type="submit" class="submit-btn">Sign Up</button>
-            </form>
-        </div>
-
-        <!-- Login to account(right box) -->
-        <div class="auth-box">
-            <h2>Log In</h2>
-            <form method="POST" action="/auth">
-                <!-- Tells app.py to run the SELECT check instead of the INSERT query -->
-                <input type="hidden" name="action" value="login">
-
-                <!-- Login username field -->
-                <div class="form-group">
-                    <label>Enter Username</label>
-                    <input type="text" name="username" required>
-                </div>
-
-                <!-- Field to enter password -->
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" required>
-                </div>
-
-                <button type="submit" class="submit-btn">Log In</button>
-            </form>
-        </div>
-
-    </main>
-
-    <!-- Empty bar matching the bottom border of the wireframe -->
-    <footer></footer>
 
 </body>
 </html>

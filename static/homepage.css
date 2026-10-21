@@ -1,0 +1,719 @@
+/*Desmond lines 1-104 */
+
+/* CSS color palette and theme */
+:root {
+  --ink: #183b3b;         /* Primary dark text and heading color */
+  --accent: #176d60;      /* Emerald theme accent for buttons and highlights */
+  --line: #dce7e3;        /* Subtle border and divider color */
+  --bg-page: #f4f7f5;     /* Page-wide light background */
+  --card-bg: #ffffff;     /* Clean white container card background */
+  --text-muted: #687f79;  /* Secondary descriptive text color */
+  --sidebar-bg: #193c32;  /* Deep forest green background for sidebar */
+  --mint: #dff0c9;        /* Pale mint green highlight for active items/cards */
+}
+
+/* smooth scrolling*/
+html {
+  scroll-behavior: smooth;
+}
+
+/* base reset and page container typography */
+body.finance-home {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-page);
+  color: var(--ink);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  box-sizing: border-box;
+}
+
+/* universal box-sizing inheritance for consistent sizing calculations */
+.finance-home *,
+.finance-home *::before,
+.finance-home *::after {
+  box-sizing: inherit;
+}
+
+/* main outer content wrapper with max width and centered padding */
+.home-shell {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 20px 24px;
+}
+
+/*top header scaled logo container + centered title*/
+
+/* three-column flex header bar holding logo, centered title, and spacer */
+.home-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+/* orient clickable logo link elements */
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* rectangular badge housing the brand logo */
+.brand-logo-box {
+  width: 140px;
+  height: 60px;
+  background: #e8f1ec;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: bold;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* scales the inner logo graphic without stretching */
+.brand-logo-box img {
+  max-width: 125px;
+  max-height: 52px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* dead-centered page heading */
+.brand-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+
+/* invisible counterweight matching logo width to keep title centered */
+.header-spacer {
+  width: 140px;
+  flex-shrink: 0;
+}
+
+/*Sakin 106-719*/
+
+/*top rounded nav blocks*/
+
+/* Horizontal navigation pill container */
+.home-nav {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 10px 18px;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  margin-bottom: 24px;
+}
+
+/* Individual rounded pill link buttons */
+.nav-block {
+  display: inline-block;
+  border-radius: 12px;
+  padding: 9px 18px;
+  color: var(--ink);
+  text-decoration: none;
+  background: #f0f5f2;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* soft hover shade for nav pill */
+.nav-block:hover {
+  background: #e0ece6;
+}
+
+/* solid green fill designating the current active route */
+.nav-block.active,
+.nav-block[aria-current="page"] {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/*Dashboard shell (sidebar + content layout)*/
+
+/* 2 column dashboard layout (fixed sidebar on left but animation content on right) */
+.dashboard-body-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+/* Dark green sticky left-hand navigation panel */
+.sidebar {
+  background: var(--sidebar-bg);
+  color: #ffffff;
+  border-radius: 24px;
+  padding: 26px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 680px;
+}
+
+/* Sidebar primary brand typography */
+.logo {
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  color: #ffffff;
+  display: block;
+}
+
+/* Small outlined icon box beside the sidebar title */
+.logo-mark {
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid #b9e094;
+  border-radius: 9px;
+  width: 30px;
+  height: 30px;
+  color: #d1edaa;
+  margin-right: 8px;
+}
+
+/* Secondary tracking label below sidebar brand */
+.logo-subtext {
+  display: block;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  margin: 6px 0 0 38px;
+  color: #aac2b4;
+}
+
+/* Container for vertical sidebar links */
+.sidebar-menu {
+  margin-top: 28px;
+}
+
+/* Section label above sidebar links */
+.side-caption {
+  color: #90ada1;
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  margin: 0 8px 10px;
+}
+
+/* Vertical link stack inside sidebar */
+.side-nav {
+  display: grid;
+  gap: 8px;
+}
+
+/* Clickable in-page menu item inside sidebar */
+.side-nav-block {
+  padding: 12px 14px;
+  border-radius: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #c8d8cf;
+  font-size: 13px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* Mint green active pill state for sidebar */
+.side-nav-block.active,
+.side-nav-block[aria-current="page"] {
+  background: var(--mint);
+  color: #193c32;
+}
+
+/* Muted hover background for inactive sidebar links */
+.side-nav-block:hover:not(.active) {
+  background: #274d41;
+  color: #ffffff;
+}
+
+/* Fixed-width icon alignment wrapper for sidebar buttons */
+.nav-icon {
+  font-size: 15px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Bottom summary quote container pinned to sidebar base */
+.side-bottom {
+  margin-top: auto;
+  border-top: 1px solid #33594c;
+  padding: 20px 8px 0;
+  color: #abc2b4;
+  line-height: 1.6;
+  font-size: 12px;
+}
+
+/* Highlighted headline text in sidebar quote */
+.side-bottom strong {
+  color: #f0f7eb;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Main Content Area */
+
+/* Main content column resetting min-width for grid children */
+.main-content {
+  min-width: 0;
+}
+
+/* Header greeting row containing title and monthly filter tag */
+.welcome-banner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  gap: 16px;
+}
+
+/* Small uppercase intro label above welcome greeting */
+.welcome-banner .eyebrow {
+  color: #6e8477;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Primary welcome headline */
+.welcome-banner h2 {
+  font-size: 30px;
+  letter-spacing: -0.8px;
+  margin: 6px 0;
+  color: var(--ink);
+}
+
+/* Secondary welcome subtext */
+.welcome-banner p {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Rounded month indicator badge on right edge */
+.period-badge {
+  padding: 9px 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 12px;
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Cards Common Styles & Cascading Animation*/
+
+/* Base card shell with rounded borders and subtle dropshadow */
+.display-card {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--card-bg);
+  box-shadow: 0 4px 16px rgba(24, 59, 59, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Interactive hover elevation lift */
+.display-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(24, 59, 59, 0.1);
+}
+
+/* Cascading slide-and-fade animation trigger */
+.display-card.animate-cascade {
+  animation: cardFadeSlide 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Smooth keyframe physics moving card from 18px below to origin */
+@keyframes cardFadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sequential delay timing cascading through cards top to bottom */
+.metrics-grid .display-card:nth-child(1) { animation-delay: 0.05s; }
+.metrics-grid .display-card:nth-child(2) { animation-delay: 0.15s; }
+.metrics-grid .display-card:nth-child(3) { animation-delay: 0.25s; }
+.analysis-grid .display-card:nth-child(1) { animation-delay: 0.35s; }
+.analysis-grid .display-card:nth-child(2) { animation-delay: 0.45s; }
+.four-cards-grid .display-card:nth-child(1) { animation-delay: 0.55s; }
+.four-cards-grid .display-card:nth-child(2) { animation-delay: 0.65s; }
+.four-cards-grid .display-card:nth-child(3) { animation-delay: 0.75s; }
+.four-cards-grid .display-card:nth-child(4) { animation-delay: 0.85s; }
+
+/*Metrics Grid (Top 3 Cards)*/
+
+/* Three-column card grid for top balance and cashflow metrics */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* Internal padding for metric summary cards */
+.metric {
+  padding: 20px;
+}
+
+/* Mint green emphasis background for Total Balance primary card */
+.metric.primary {
+  background: var(--mint);
+  border-color: #d2e4b9;
+}
+
+/* Header row inside metric card (label left, badge right) */
+.metric-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #657469;
+  font-size: 12px;
+}
+
+/* Rounded square symbol icon container */
+.metric-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: #f1f4ea;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+}
+
+/* Icon badge color for primary card */
+.metric.primary .metric-icon {
+  background: #cde2b6;
+}
+
+/* Large numeric monetary figures */
+.amount {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 16px 0 10px;
+}
+
+/* Percentage change indicator with trend arrow */
+.trend {
+  font-size: 11px;
+  color: #39734d;
+  font-weight: 600;
+}
+
+/* Comparison baseline text ("vs. last month") */
+.trend span {
+  color: var(--text-muted);
+  margin-left: 5px;
+  font-weight: 400;
+}
+
+/*Analysis Grid (SVG Chart + Budget Bars)*/
+
+/* 2-column layout (wide SVG chart left, budget bars right) */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 18px;
+  margin-bottom: 34px;
+}
+
+/* Inner padding for chart and progress container panels */
+.panel {
+  padding: 22px;
+}
+
+/* Header bar inside charts for titles and legend dots */
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+/* Chart and budget card title text */
+.panel h3 {
+  font-size: 16px;
+  margin: 0;
+  color: var(--ink);
+}
+
+/* Small explanatory caption beneath chart headings */
+.subtext {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* Chart key indicating Income vs Expense colors */
+.legend {
+  display: flex;
+  gap: 12px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Circular key color indicator */
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 5px;
+  background: #3d715c;
+}
+
+/* Muted dot for expense indicator */
+.dot.soft {
+  background: #c9dfa7;
+}
+
+/* Pure SVG chart element responsive rendering */
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 14px;
+}
+
+/* Container for individual budget category tracker */
+.budget-row {
+  margin-top: 18px;
+}
+
+/* Budget category name and spent amount header */
+.row-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Secondary fractional amount display */
+.row-label span {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Background track meter for progress bar */
+.track {
+  height: 7px;
+  background: #eff1e9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Active colored progress fill meter */
+.fill {
+  height: 100%;
+  border-radius: 10px;
+  background: #48745e;
+}
+
+/* Gold color variant for shopping progress */
+.fill.gold {
+  background: #d2ac64;
+}
+
+/* Pale green variant for groceries progress */
+.fill.light {
+  background: #a8c285;
+}
+
+/* Callout advice box at the bottom of budget overview */
+.budget-note {
+  margin-top: 20px;
+  font-size: 11px;
+  color: #6f8172;
+  background: #f4f7ee;
+  padding: 12px;
+  border-radius: 12px;
+  line-height: 1.5;
+}
+
+/*Section Title & 4 Feature Showcase Cards (2x2 Grid)*/
+
+/* Divider bar heading separating charts from feature cards */
+.section-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Section heading title */
+.section-title-wrapper h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+/* Subtitle indicating sprint wireframe context */
+.section-title-wrapper span {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* 2x2 grid container holding the 4 feature cards */
+.four-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+/* Horizontal card container with image left and text right */
+.showcase-card {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  padding: 14px;
+}
+
+/* Fixed container maintaining image aspect ratio without layout shift */
+.card-image-wrapper {
+  width: 130px;
+  min-height: 110px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e8f1ec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensures card images cover container smoothly without distortion */
+.card-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Vertical text column on right side of showcase card */
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Feature card title */
+.card-content h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Bullet list indent reset */
+.card-content ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+/* Compact bullet point copy */
+.card-content li {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/*Responsive Breakpoints & Motion Safety*/
+
+/* Medium screen breakpoint: collapse sidebar and 2x2 grid to single column */
+@media (max-width: 1080px) {
+  .dashboard-body-layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    min-height: auto;
+  }
+  .four-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile screen breakpoint: vertical stacking and image resizing */
+@media (max-width: 768px) {
+  .home-header-top {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  .header-spacer {
+    display: none;
+  }
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  .analysis-grid {
+    grid-template-columns: 1fr;
+  }
+  .showcase-card {
+    flex-direction: column;
+  }
+  .card-image-wrapper {
+    width: 100%;
+    height: 140px;
+  }
+}
+
+/* Accessibility: disables CSS animations for users requesting reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .display-card {
+    animation: none;
+    transition: none;
+  }
+  .display-card:hover {
+    transform: none;
+  }
+  .nav-block,
+  .side-nav-block {
+    transition: none;
+  }
+}
+
+/*Footer*/
+
+/* Centered footer bar at page bottom */
+.home-footer {
+  border-top: 1px solid var(--line);
+  padding: 24px 0 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 16px;
+}

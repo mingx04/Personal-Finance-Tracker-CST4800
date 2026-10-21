@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What is CashFlow?</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='homepage.css') }}">
+</head>
+<body class="finance-home">
+
+    <div class="home-shell">
+        <!-- Taif Quddus lines 1-24 and 243-246(footer) --> 
+        <!-- imported the header and logo image is on the top left with name "cashflow"  -->
+        <header class="home-header-top">
+            <a href="/" style="text-decoration: none; color: inherit;">
+                <div class="brand-wrapper">
+                    <div class="brand-logo-box">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" onerror="this.innerText='CashFlow'">
+                    </div>
+                </div>
+            </a>
+            <h1 class="brand-title">Your Overview From a Glance</h1>
+            <div class="header-spacer" aria-hidden="true"></div>
+        </header>
+
+        <!-- imported nav blocks, removed transaction log so its 3 pages and "about us" is now "overveiw"  -->
+        <nav class="home-nav" aria-label="Main navigation">
+            <a class="nav-block" href="/auth">Login / Create an Account</a>
+            <a class="nav-block active" href="#overview">Overview</a>
+            <a class="nav-block" href="/dashboard">Budget Tracker</a>
+        </nav>
+        <!--Sakin Zaman lines 32-172-->
+        <!-- created a dashboard layout -->
+        <div class="dashboard-body-layout" id="overview">
+            
+            <!-- Left green sidebar having 2 anchors -->
+            <aside class="sidebar">
+                <div class="sidebar-top">
+                    <a class="logo" href="#overview">
+                        <span class="logo-mark">↗</span>CashFlow
+                        <span class="logo-subtext">FINANCE TRACKER</span>
+                    </a>
+                    
+                    <div class="sidebar-menu">
+                        <p class="side-caption">WORKSPACE</p>
+                        <nav class="side-nav" aria-label="Sidebar In-page Navigation">
+                            <a class="side-nav-block active" href="#overview">
+                                <span class="nav-icon" aria-hidden="true">▦</span> Overview
+                            </a>
+                            <a class="side-nav-block" href="#about-cards">
+                                <span class="nav-icon" aria-hidden="true">◎</span> About Us
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="side-bottom">
+                    <strong>A little clarity goes a long way.</strong>
+                    Your spending, budgets, and goals. Together in one place.
+                </div>
+            </aside>
+
+            <!-- Area for the main content -->
+            <main class="main-content">
+                
+                <!-- Welcome banner -->
+                <section class="welcome-banner">
+                    <div>
+                        <div class="eyebrow">Your financial snapshot</div>
+                        <h2>A clearer view of your money.</h2>
+                        <p>Spend with intention. Save with confidence.</p>
+                    </div>
+                    <div class="period-badge">October 2026 ▾</div>
+                </section>
+
+                <!-- 3 status cards with total balance, monthly income, and monthly expsenses with the fade animation -->
+                <section class="metrics-grid" aria-label="Sample financial summary">
+                    <article class="display-card metric primary animate-cascade">
+                        <div class="metric-top">Total balance<span class="metric-icon" aria-hidden="true">$</span></div>
+                        <div class="amount">$12,840.00</div>
+                        <div class="trend">↗ 8.2%<span>vs. last month</span></div>
+                    </article>
+
+                    <article class="display-card metric animate-cascade">
+                        <div class="metric-top">Monthly income<span class="metric-icon" aria-hidden="true">↙</span></div>
+                        <div class="amount">$5,540.00</div>
+                        <div class="trend">↗ 4.6%<span>vs. last month</span></div>
+                    </article>
+
+                    <article class="display-card metric animate-cascade">
+                        <div class="metric-top">Monthly expenses<span class="metric-icon" aria-hidden="true">↗</span></div>
+                        <div class="amount">$3,480.00</div>
+                        <div class="trend">↘ 2.1%<span>vs. last month</span></div>
+                    </article>
+                </section>
+
+                <!-- grid for bar graph and expenses category using pure CSS and SVG charts (will make functional next sprint)  -->
+                <section class="analysis-grid">
+                    <article class="display-card panel animate-cascade" id="activity">
+                        <div class="panel-heading">
+                            <h3>Money in. Money out.</h3>
+                            <div class="legend">
+                                <span><i class="dot"></i>Income</span>
+                                <span><i class="dot soft"></i>Expenses</span>
+                            </div>
+                        </div>
+                        <div class="subtext">Six-month overview · illustrative sample</div>
+                        <svg class="chart" viewBox="0 0 580 220" role="img" aria-label="Monthly income and expenses chart">
+                            <g stroke="#edf0e8">
+                                <path d="M38 32H560M38 80H560M38 128H560M38 176H560"/>
+                            </g>
+                            <g fill="#8d978f" font-family="Inter, sans-serif" font-size="10">
+                                <text x="1" y="36">6k</text>
+                                <text x="1" y="84">4k</text>
+                                <text x="1" y="132">2k</text>
+                                <text x="1" y="180">0</text>
+                            </g>
+                            <g fill="#c9dfa7">
+                                <rect x="65" y="119" width="21" height="57" rx="5"/>
+                                <rect x="150" y="104" width="21" height="72" rx="5"/>
+                                <rect x="235" y="114" width="21" height="62" rx="5"/>
+                                <rect x="320" y="87" width="21" height="89" rx="5"/>
+                                <rect x="405" y="99" width="21" height="77" rx="5"/>
+                                <rect x="490" y="92" width="21" height="84" rx="5"/>
+                            </g>
+                            <g fill="#3d715c">
+                                <rect x="91" y="65" width="21" height="111" rx="5"/>
+                                <rect x="176" y="49" width="21" height="127" rx="5"/>
+                                <rect x="261" y="64" width="21" height="112" rx="5"/>
+                                <rect x="346" y="35" width="21" height="141" rx="5"/>
+                                <rect x="431" y="54" width="21" height="122" rx="5"/>
+                                <rect x="516" y="43" width="21" height="133" rx="5"/>
+                            </g>
+                            <g fill="#89958b" font-family="Inter, sans-serif" font-size="10" text-anchor="middle">
+                                <text x="90" y="205">May</text>
+                                <text x="175" y="205">Jun</text>
+                                <text x="260" y="205">Jul</text>
+                                <text x="345" y="205">Aug</text>
+                                <text x="430" y="205">Sep</text>
+                                <text x="515" y="205">Oct</text>
+                            </g>
+                        </svg>
+                    </article>
+
+                    <article class="display-card panel animate-cascade" id="budget-summary">
+                        <div class="panel-heading">
+                            <h3>Budget overview</h3>
+                            <span class="subtext">This month</span>
+                        </div>
+                        <div class="subtext">A plan for your everyday priorities.</div>
+                        <div class="budget-row">
+                            <div class="row-label">Housing<span>$1,500 / $1,800</span></div>
+                            <div class="track"><div class="fill" style="width:83%"></div></div>
+                        </div>
+                        <div class="budget-row">
+                            <div class="row-label">Food &amp; groceries<span>$420 / $600</span></div>
+                            <div class="track"><div class="fill light" style="width:70%"></div></div>
+                        </div>
+                        <div class="budget-row">
+                            <div class="row-label">Shopping<span>$280 / $350</span></div>
+                            <div class="track"><div class="fill gold" style="width:80%"></div></div>
+                        </div>
+                        <div class="budget-note">
+                            Keep a little breathing room in your budget.<br>Small adjustments can make a lasting difference.
+                        </div>
+                    </article>
+                </section>
+
+                <!--Ming Gui Xiao lines 169-241-->
+                <!-- grid section divider -->
+                <div class="section-title-wrapper" id="about-cards">
+                    <h3>Explore CashFlow Core Features</h3>                    
+                </div>
+
+                <!-- 4 display card put in a 2x2 grid w/ Sakin's fade animation -->
+                <section class="four-cards-grid" aria-label="Feature showcase cards">
+                    
+                    <!-- card 1 -->
+                    <article class="display-card showcase-card animate-cascade">
+                        <div class="card-image-wrapper">
+                            <img class="card-image" src="{{ url_for('static', filename='images/card1.jpg') }}" alt="Track Cash Inflow">
+                        </div>
+                        <div class="card-content">
+                            <h4>Track Cash Inflow</h4>
+                            <ul>
+                                <li>Monitor active income and deposits instantly.</li>
+                                <li>Log recurring paychecks and external transfers.</li>
+                                <li>Maintain clean records of net positive balance.</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- card 2 -->
+                    <article class="display-card showcase-card animate-cascade">
+                        <div class="card-image-wrapper">
+                            <img class="card-image" src="{{ url_for('static', filename='images/card2.jpg') }}" alt="Control Outflow & Expenses">
+                        </div>
+                        <div class="card-content">
+                            <h4>Control Outflow &amp; Expenses</h4>
+                            <ul>
+                                <li>Set spending limits on food, utilities, and retail.</li>
+                                <li>View transaction logs organized by category.</li>
+                                <li>Eliminate unexpected monthly overdrafts.</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- card 3 -->
+                    <article class="display-card showcase-card animate-cascade">
+                        <div class="card-image-wrapper">
+                            <img class="card-image" src="{{ url_for('static', filename='images/card3.jpg') }}" alt="Visual Growth Summaries">
+                        </div>
+                        <div class="card-content">
+                            <h4>Visual Growth Summaries</h4>
+                            <ul>
+                                <li>Compare monthly income against expenditures.</li>
+                                <li>View easy-to-read progress percentages.</li>
+                                <li>Identify spending leaks before they accumulate.</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- card 4 -->
+                    <article class="display-card showcase-card animate-cascade">
+                        <div class="card-image-wrapper">
+                            <img class="card-image" src="{{ url_for('static', filename='images/card4.jpg') }}" alt="Manipulate How Your Money Meanders">
+                        </div>
+                        <div class="card-content">
+                            <h4>Manipulate How Your Money Meanders</h4>
+                            <ul>
+                                <li>Your cashflow stream respresents your income,expenses,and what you spend on.</li>
+                                <li>Set a budget destination that tracks your spending habits.</li>
+                                <li>Visualize your cashflow so you can find best finanical routes.</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                </section>
+
+            </main>
+        </div>
+
+        <!-- imported the footer(Taif)  -->
+        <footer class="home-footer">
+            <p>CashFlow is a personal finance tracker designed to monitor spending trends, log daily income and expenses, and maintain category budgets.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 # Youssopha Toure (1-16)
-#                      Imports and Setup 
+#                   Imports and Setup 
 # Flask: Web framework core
 # render_template: injects data and serves HTML files from the templates/ folder
 # request: reads user inputs sent via HTML forms
@@ -51,8 +51,8 @@ init_db()
 #     routing route : home
 @app.route("/")
 def home():
-    """Redirects the base URL (http://127.0.0.1:5000/) directly to our auth page."""
-    return redirect(url_for("auth"))
+    """Renders the public landing page at the base URL (http://127.0.0.1:5000/)."""
+    return render_template("home.html")
 
 # Sakin Zaman: 57 to 129 
 #           Routing: authentication (SQL & FORM LOGIC) 
@@ -81,7 +81,7 @@ def auth():
             conn = sqlite3.connect(DB_NAME)
             cursor = conn.cursor()
 
-            #  case 1: user is signing up
+            #   case 1: user is signing up
             if action == "signup":
                 try:
                     # SQL INSERT: parameterized with '?' placeholders to prevent SQL injection
@@ -99,7 +99,7 @@ def auth():
                     message = "Username already exists. Choose another."
                     status = "error"
 
-            #   case 2: user is loggin in
+            #    case 2: user is loggin in
             elif action == "login":
                 # SQL SELECT: query for a row matching both username and password
                 cursor.execute(
@@ -121,6 +121,12 @@ def auth():
 
     # pass the outcome back to the HTML template to display dynamic alerts
     return render_template("login.html", message=message, status=status)
+
+
+# Optional dashboard route reserved for Sakin's workspace preview
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
 
 
 # application entry point
