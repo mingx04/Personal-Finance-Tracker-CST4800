@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Budget Tracker & Financial Log - CashFlow</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='budget.css') }}">
+</head>
+<body class="finance-home">
+
+    <div class="home-shell">
+        <!-- Taif: Top header with logo, page title, logged-in user badge, and logout button -->
+        <header class="home-header-top">
+            <a href="/" style="text-decoration: none; color: inherit;">
+                <div class="brand-wrapper">
+                    <div class="brand-logo-box">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="CashFlow Logo" onerror="this.innerText='CashFlow'">
+                    </div>
+                </div>
+            </a>
+            <h1 class="brand-title">Budget Tracker & Spending Log</h1>
+            
+            <!-- shows who is currently logged in and lets them sign out back to /auth -->
+            <div class="header-user-actions">
+                <span class="user-badge" title="Logged in session user">
+                    <span class="user-status-dot" aria-hidden="true"></span>
+                    {{ session.get('username', 'Demo User') }}
+                </span>
+                <a href="/logout" class="btn-logout" role="button">Log Out</a>
+            </div>
+        </header>
+
+        <!-- Taif: Top navigation bar linking between login, overview, and budget tracker -->
+        <nav class="home-nav" aria-label="Primary navigation">
+            <a class="nav-block" href="/auth">Login / Create an Account</a>
+            <a class="nav-block" href="/#overview">Overview</a>
+            <a class="nav-block active" href="/budget" aria-current="page">Budget Tracker</a>
+        </nav>
+
+        <!-- sakin zaman: main 2-column dashboard shell with sticky dark green sidebar -->
+        <div class="dashboard-body-layout" id="overview">
+            
+            <!-- sidebar with quick jump links to switch between charts and the transaction log -->
+            <aside class="sidebar" aria-label="Workspace sidebar">
+                <div class="sidebar-top">
+                    <a class="logo" href="/budget">
+                        <span class="logo-mark">↗</span>CashFlow
+                        <span class="logo-subtext">FINANCE TRACKER</span>
+                    </a>
+                    
+                    <div class="sidebar-menu">
+                        <p class="side-caption">WORKSPACE</p>
+                        <nav class="side-nav" aria-label="Sidebar sections">
+                            <a class="side-nav-block active" href="#metrics-section">
+                                <span class="nav-icon" aria-hidden="true">▦</span> Monthly Summary
+                            </a>
+                            <a class="side-nav-block" href="#transaction-section">
+                                <span class="nav-icon" aria-hidden="true">✎</span> Log Transaction
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="side-bottom">
+                    <strong>A little clarity goes a long way.</strong>
+                    Your spending, budgets, and goals. Together in one place.
+                </div>
+            </aside>
+
+            <!-- Main Workspace Content Area -->
+            <main class="main-content">
+                
+                <!-- John: Welcome greeting banner with month/year filter dropdown -->
+                <section class="welcome-banner" aria-label="Workspace introduction">
+                    <div>
+                        <div class="eyebrow">YOUR FINANCIAL SNAPSHOT</div>
+                        <h2>A clearer view of your money.</h2>
+                        <p>Spend with intention. Save with confidence.</p>
+                    </div>
+                    
+                    <!-- John: Dropdown form that reloads the page for whichever month/year the user picks -->
+                    <form method="GET" action="{{ request.path }}" class="period-selector">
+                        <select name="period" onchange="this.form.submit()" aria-label="Select monthly overview period">
+                            {% for y, m, name in months %}
+                            <option value="{{ y }}-{{ m }}" {% if m == selected_month and y == selected_year %}selected{% endif %}>
+                                {{ name }} {{ y }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </section>
+
+                <!-- Container holding the metrics, chart, and budget cards -->
+                <section class="metrics-wireframe-grid" id="metrics-section" aria-label="Financial analytics and category limits">
+                    
+                    <!-- John: Total Balance, Monthly Income, Monthly Expenses with trend comparisons -->
+                    {% if metrics %}
+                    <section class="metrics-grid" aria-label="High-level financial summaries">
+                        
+                        <!-- Card 1: Total Balance -->
+                        <article class="display-card metric primary animate-cascade">
+                            <div class="metric-top">
+                                <span>Total balance</span>
+                                <span class="metric-icon" aria-hidden="true">$</span>
+                            </div>
+                            <div class="amount" data-target="{{ metrics.balance }}">$0.00</div>
+                            <div class="trend {{ metrics.balance_trend.direction }}" aria-label="Trend compared to previous month">
+                                <span>{{ metrics.balance_trend.arrow }} {{ metrics.balance_trend.pct }}</span>
+                                <span class="trend-caption">{{ metrics.balance_trend.text }}</span>
+                            </div>
+                        </article>
+
+                        <!-- Card 2: Monthly Income -->
+                        <article class="display-card metric animate-cascade">
+                            <div class="metric-top">
+                                <span>Monthly income</span>
+                                <span class="metric-icon" aria-hidden="true">↙</span>
+                            </div>
+                            <div class="amount" data-target="{{ metrics.income }}">$0.00</div>
+                            <div class="trend {{ metrics.income_trend.direction }}" aria-label="Trend compared to previous month">
+                                <span>{{ metrics.income_trend.arrow }} {{ metrics.income_trend.pct }}</span>
+                                <span class="trend-caption">{{ metrics.income_trend.text }}</span>
+                            </div>
+                        </article>
+
+                        <!-- Card 3: Monthly Expenses -->
+                        <article class="display-card metric animate-cascade">
+                            <div class="metric-top">
+                                <span>Monthly expenses</span>
+                                <span class="metric-icon" aria-hidden="true">↗</span>
+                            </div>
+                            <div class="amount" data-target="{{ metrics.expenses }}">$0.00</div>
+                            <div class="trend {{ metrics.expenses_trend.direction }}" aria-label="Trend compared to previous month">
+                                <span>{{ metrics.expenses_trend.arrow }} {{ metrics.expenses_trend.pct }}</span>
+                                <span class="trend-caption">{{ metrics.expenses_trend.text }}</span>
+                            </div>
+                        </article>
+
+                    </section>
+                    {% endif %}
+
+                    <!-- desmond: split row for the bar graph and budget progress bars -->
+                    <div class="dashboard-analytics-row">
+                        
+                        <!-- desmond: 6-month income vs expenses bar graph built from the user's transaction log -->
+                        <article class="display-card panel chart-card animate-cascade">
+                            <div class="chart-header">
+                                <div>
+                                    <h3 class="chart-title">Money in. Money out.</h3>
+                                    <span class="chart-subtitle">Six-month overview &middot; dynamic ledger</span>
+                                </div>
+                                <div class="chart-legend">
+                                    <span class="legend-item"><span class="legend-dot dot-income"></span> Income</span>
+                                    <span class="legend-item"><span class="legend-dot dot-expense"></span> Expenses</span>
+                                </div>
+                            </div>
+
+                            <div class="chart-container">
+                                <!-- horizontal background gridlines and Y-axis percentage labels -->
+                                <div class="chart-gridlines">
+                                    <div class="grid-row"><span>Top</span><div class="grid-line"></div></div>
+                                    <div class="grid-row"><span>75%</span><div class="grid-line"></div></div>
+                                    <div class="grid-row"><span>50%</span><div class="grid-line"></div></div>
+                                    <div class="grid-row"><span>0</span><div class="grid-line"></div></div>
+                                </div>
+
+                                <!-- loops through the last 6 months and renders paired income/expense bars -->
+                                <div class="chart-bars-wrap">
+                                    {% for col in monthly_chart %}
+                                    <div class="chart-month-col">
+                                        <div class="bars-pair">
+                                            <div class="chart-bar bar-income" data-fill="{{ col.income_height }}" title="{{ col.label }} Income: ${{ col.income }}"></div>
+                                            <div class="chart-bar bar-expense" data-fill="{{ col.expense_height }}" title="{{ col.label }} Expense: ${{ col.expense }}"></div>
+                                        </div>
+                                        <span class="month-label">{{ col.label }}</span>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- sakin zaman: category budget goals with inline limit editing and progress bars -->
+                        <article class="display-card panel budget-overview-card animate-cascade">
+                            <div class="panel-heading" style="margin-bottom: 16px;">
+                                <div>
+                                    <h3>Budget overview</h3>
+                                    <span class="subtext">A plan for your everyday priorities.</span>
+                                </div>
+                                <span class="badge-subtle">{{ month_name }} {{ selected_year }}</span>
+                            </div>
+
+                            <div class="budget-bars-list">
+                                {% if category_budgets %}
+                                    {% for item in category_budgets %}
+                                    <div class="budget-item">
+                                        <div class="budget-item-header">
+                                            <span class="budget-category-name">{{ item.name }}</span>
+                                            
+                                            <!-- lets the user type a new dollar cap for each category and save it -->
+                                            <div class="budget-controls-wrapper">
+                                                <span class="spent-value">${{ "%.0f"|format(item.spent) }} /</span>
+                                                <form method="POST" action="{{ request.path }}?period={{ selected_year }}-{{ selected_month }}" class="inline-budget-form">
+                                                    <input type="hidden" name="form_action" value="update_budget">
+                                                    <input type="hidden" name="category" value="{{ item.name }}">
+                                                    <span class="currency-prefix">$</span>
+                                                    <input type="number" 
+                                                           name="limit_amount" 
+                                                           step="10" 
+                                                           min="1" 
+                                                           value="{{ item.limit|int }}" 
+                                                           class="budget-edit-input" 
+                                                           title="Edit budget cap">
+                                                    <button type="submit" class="btn-save-cap" title="Save">✓</button>
+                                                </form>
+
+                                                {% if item.is_over %}
+                                                    <span class="badge-over">Over Budget</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <!-- progress bar fills based on spending and turns red if over budget -->
+                                        <div class="progress-track" role="progressbar" aria-valuenow="{{ item.raw_pct }}" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-fill {{ item.color_class }} {{ 'progress-over' if item.is_over else '' }}" 
+                                                 data-fill="{{ item.fill_pct }}"></div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="breathing-room-box">
+                                <strong>Keep a little breathing room in your budget.</strong>
+                                <span>Small adjustments can make a lasting difference.</span>
+                            </div>
+                        </article>
+
+                    </div>
+
+                </section>
+
+                <!-- Youssoupha Toure: Bottom wireframe section for logging and viewing transactions -->
+                <section class="transaction-wireframe-container" id="transaction-section" aria-label="Transaction logging and records" style="margin-top: 32px;">
+                    
+                    <!-- Form to log a new income or expense transaction -->
+                    <div class="display-card panel animate-cascade">
+                        <div class="panel-heading">
+                            <h3>Add New Transaction</h3>
+                            <span class="subtext">Log cash inflows and outflows to update all live summaries</span>
+                        </div>
+
+                        <form class="transaction-form" method="POST" action="{{ request.path }}?period={{ selected_year }}-{{ selected_month }}">
+                            <input type="hidden" name="form_action" value="add_transaction">
+                            <div class="form-grid">
+                                
+                                <div class="form-group">
+                                    <label for="amount">Amount ($)</label>
+                                    <input type="number" id="amount" name="amount" step="0.01" min="0.01" placeholder="0.00" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="type">Type</label>
+                                    <select id="type" name="type" class="type-select type-income" onchange="updateTypeColor(this)" required>
+                                        <option value="Income" class="option-income" selected>Income</option>
+                                        <option value="Expense" class="option-expense">Expense</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="category">Category</label>
+                                    <select id="category" name="category" required>
+                                        <optgroup label="Income Streams">
+                                            <option value="Salary / Income">Salary / Income</option>
+                                        </optgroup>
+                                        <optgroup label="Budgeted Expense Categories">
+                                            <option value="Bills">Bills</option>
+                                            <option value="Food & Groceries">Food & Groceries</option>
+                                            <option value="Shopping">Shopping</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="date">Date</label>
+                                    <input type="date" id="date" name="date" required>
+                                </div>
+
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-submit">Add Transaction</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Transaction history table with reset and single-row delete controls -->
+                    <div class="display-card panel animate-cascade" style="margin-top: 24px;">
+                        <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h3>Transaction History</h3>
+                                <span class="subtext">Chronological record of recent entries</span>
+                            </div>
+                            <!-- Button to wipe all logged transactions and reset the ledger -->
+                            {% if transactions %}
+                            <form method="POST" action="{{ request.path }}?period={{ selected_year }}-{{ selected_month }}" onsubmit="return confirm('Are you sure you want to delete all transactions and reset your ledger?');">
+                                <input type="hidden" name="form_action" value="clear_all_transactions">
+                                <button type="submit" class="btn-clear-all" title="Clear all recorded entries">
+                                    🗑 Reset Ledger
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="table-wrapper">
+                            <table class="transaction-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col" style="text-align: right;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if transactions %}
+                                        {% for t in transactions %}
+                                        <tr>
+                                            <td>{{ t['date'] }}</td>
+                                            <td>{{ t['category'] }}</td>
+                                            <td class="{{ 'text-income' if t['type']|lower == 'income' else 'text-expense' }}">
+                                                {{ t['type'] }}
+                                            </td>
+                                            <td class="{{ 'text-income' if t['type']|lower == 'income' else 'text-expense' }}">
+                                                ${{ "%.2f"|format(t['amount']) }}
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <!-- Delete button for removing an individual transaction row -->
+                                                <form method="POST" action="{{ request.path }}?period={{ selected_year }}-{{ selected_month }}" style="display: inline;" onsubmit="return confirm('Remove this transaction entry?');">
+                                                    <input type="hidden" name="form_action" value="delete_transaction">
+                                                    <input type="hidden" name="transaction_id" value="{{ t['id'] }}">
+                                                    <button type="submit" class="btn-delete-row" title="Delete entry">✕</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5" class="no-records">No transactions logged yet. Add one above!</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+            </main>
+        </div>
+
+        <!-- Taif: page footer from both homepage and login page -->
+        <footer class="home-footer">
+            <p>CashFlow is a personal finance tracker designed to monitor spending trends, log daily income and expenses, and maintain category budgets.</p>
+        </footer>
+
+    </div>
+
+    <!-- Client-Side JavaScript Helpers -->
+    <script>
+        // Youssoupha Toure: Switches dropdown text color between green for Income and red Expense
+        function updateTypeColor(selectElement) {
+            if (selectElement.value === 'Income') {
+                selectElement.className = 'type-select type-income';
+            } else {
+                selectElement.className = 'type-select type-expense';
+            }
+        }
+
+        // John: Animates the 3 summary card dollar amounts counting up from $0.00
+        function animateAmount(el) {
+            const target = parseFloat(el.dataset.target) || 0;
+            const duration = 1200;
+            const start = performance.now();
+            const startVal = 0;
+
+            function update(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = startVal + (target - startVal) * eased;
+                el.textContent = '$' + current.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    el.classList.remove('animating');
+                }
+            }
+
+            el.classList.add('animating');
+            requestAnimationFrame(update);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Trigger count-up animation on load
+            document.querySelectorAll('.amount[data-target]').forEach(el => {
+                animateAmount(el);
+            });
+
+            // sakin zaman: set horizontal width on each budget progress bar
+            document.querySelectorAll('.progress-fill[data-fill]').forEach(el => {
+                const fillVal = el.getAttribute('data-fill');
+                if (fillVal !== null) {
+                    el.style.width = fillVal + '%';
+                }
+            });
+
+            // desmond: Set vertical height on each bar in the 6-month chart
+            document.querySelectorAll('.chart-bar[data-fill]').forEach(el => {
+                const fillVal = el.getAttribute('data-fill');
+                if (fillVal !== null) {
+                    el.style.height = fillVal + '%';
+                }
+            });
+
+            // Youssoupha Toure: Default the transaction date picker to today's date
+            const dateInput = document.getElementById('date');
+            if (dateInput && !dateInput.value) {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                dateInput.value = `${year}-${month}-${day}`;
+            }
+        });
+    </script>
+</body>
+</html>

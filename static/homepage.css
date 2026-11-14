@@ -1,23 +1,22 @@
-/*Desmond lines 1-104 */
+/*desmond — theme variables, base Shell & 6-Month SVG bar chart*/
 
-/* CSS color palette and theme */
+/* main color palette and theme variables */
 :root {
-  --ink: #183b3b;         /* Primary dark text and heading color */
-  --accent: #176d60;      /* Emerald theme accent for buttons and highlights */
-  --line: #dce7e3;        /* Subtle border and divider color */
-  --bg-page: #f4f7f5;     /* Page-wide light background */
-  --card-bg: #ffffff;     /* Clean white container card background */
-  --text-muted: #687f79;  /* Secondary descriptive text color */
-  --sidebar-bg: #193c32;  /* Deep forest green background for sidebar */
-  --mint: #dff0c9;        /* Pale mint green highlight for active items/cards */
+  --ink: #183b3b;
+  --accent: #176d60;
+  --line: #dce7e3;
+  --bg-page: #f4f7f5;
+  --card-bg: #ffffff;
+  --text-muted: #687f79;
+  --sidebar-bg: #193c32;
+  --mint: #dff0c9;
 }
 
-/* smooth scrolling*/
 html {
   scroll-behavior: smooth;
 }
 
-/* base reset and page container typography */
+/* base font, background, and sizing reset */
 body.finance-home {
   margin: 0;
   padding: 0;
@@ -27,23 +26,64 @@ body.finance-home {
   box-sizing: border-box;
 }
 
-/* universal box-sizing inheritance for consistent sizing calculations */
 .finance-home *,
 .finance-home *::before,
 .finance-home *::after {
   box-sizing: inherit;
 }
 
-/* main outer content wrapper with max width and centered padding */
+/* centered outer container */
 .home-shell {
   max-width: 1380px;
   margin: 0 auto;
   padding: 20px 24px;
 }
 
-/*top header scaled logo container + centered title*/
+/* 2-column grid holding the SVG chart on the left and budget overview on the right */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 18px;
+  margin-bottom: 34px;
+}
 
-/* three-column flex header bar holding logo, centered title, and spacer */
+/* legend dots for Income vs Expenses above the SVG chart */
+.legend {
+  display: flex;
+  gap: 12px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 5px;
+  background: #3d715c;
+}
+
+.dot.soft {
+  background: #c9dfa7;
+}
+
+/* responsive SVG chart container and bar height transitions */
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 14px;
+}
+
+.chart rect {
+  transition: height 0.4s ease, y 0.4s ease;
+}
+
+
+/*Taif: top header, logo, user badge, nav bar logout button & footer*/
+
+/* top header box with logo on left, title in middle, and user logout on right */
 .home-header-top {
   display: flex;
   align-items: center;
@@ -55,13 +95,11 @@ body.finance-home {
   margin-bottom: 12px;
 }
 
-/* orient clickable logo link elements */
 .brand-wrapper {
   display: flex;
   align-items: center;
 }
 
-/* rectangular badge housing the brand logo */
 .brand-logo-box {
   width: 140px;
   height: 60px;
@@ -78,7 +116,6 @@ body.finance-home {
   flex-shrink: 0;
 }
 
-/* scales the inner logo graphic without stretching */
 .brand-logo-box img {
   max-width: 125px;
   max-height: 52px;
@@ -87,7 +124,6 @@ body.finance-home {
   object-fit: contain;
 }
 
-/* dead-centered page heading */
 .brand-title {
   font-size: 24px;
   font-weight: 700;
@@ -97,17 +133,65 @@ body.finance-home {
   flex: 1;
 }
 
-/* invisible counterweight matching logo width to keep title centered */
-.header-spacer {
-  width: 140px;
+/* logged-in username badge and logout button */
+.header-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   flex-shrink: 0;
 }
 
-/*Sakin 106-719*/
+.user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: #f0f5f2;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
 
-/*top rounded nav blocks*/
+.user-status-dot {
+  width: 7px;
+  height: 7px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+}
 
-/* Horizontal navigation pill container */
+.btn-logout {
+  padding: 7px 14px;
+  border-radius: 12px;
+  background: #fae8e8;
+  color: #c93b3b;
+  border: 1px solid #f3cfcf;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-logout:hover {
+  background: #c93b3b;
+  color: #ffffff;
+  border-color: #c93b3b;
+}
+
+/* bottom page footer */
+.home-footer {
+  border-top: 1px solid var(--line);
+  padding: 24px 0 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 16px;
+}
+
+/* top navigation pill bar */
 .home-nav {
   display: flex;
   gap: 10px;
@@ -119,7 +203,6 @@ body.finance-home {
   margin-bottom: 24px;
 }
 
-/* Individual rounded pill link buttons */
 .nav-block {
   display: inline-block;
   border-radius: 12px;
@@ -132,21 +215,19 @@ body.finance-home {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* soft hover shade for nav pill */
 .nav-block:hover {
   background: #e0ece6;
 }
 
-/* solid green fill designating the current active route */
 .nav-block.active,
 .nav-block[aria-current="page"] {
   background: var(--accent);
   color: #ffffff;
 }
 
-/*Dashboard shell (sidebar + content layout)*/
 
-/* 2 column dashboard layout (fixed sidebar on left but animation content on right) */
+/*sakin zaman — sidebar, cards, animations & budget progress bars*/
+/* 2-column dashboard grid with dark green sidebar on left */
 .dashboard-body-layout {
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
@@ -154,7 +235,6 @@ body.finance-home {
   align-items: start;
 }
 
-/* Dark green sticky left-hand navigation panel */
 .sidebar {
   background: var(--sidebar-bg);
   color: #ffffff;
@@ -166,7 +246,6 @@ body.finance-home {
   min-height: 680px;
 }
 
-/* Sidebar primary brand typography */
 .logo {
   font-size: 22px;
   font-weight: 750;
@@ -176,7 +255,6 @@ body.finance-home {
   display: block;
 }
 
-/* Small outlined icon box beside the sidebar title */
 .logo-mark {
   display: inline-grid;
   place-items: center;
@@ -188,7 +266,6 @@ body.finance-home {
   margin-right: 8px;
 }
 
-/* Secondary tracking label below sidebar brand */
 .logo-subtext {
   display: block;
   font-size: 9px;
@@ -198,12 +275,10 @@ body.finance-home {
   color: #aac2b4;
 }
 
-/* Container for vertical sidebar links */
 .sidebar-menu {
   margin-top: 28px;
 }
 
-/* Section label above sidebar links */
 .side-caption {
   color: #90ada1;
   font-size: 10px;
@@ -212,13 +287,11 @@ body.finance-home {
   margin: 0 8px 10px;
 }
 
-/* Vertical link stack inside sidebar */
 .side-nav {
   display: grid;
   gap: 8px;
 }
 
-/* Clickable in-page menu item inside sidebar */
 .side-nav-block {
   padding: 12px 14px;
   border-radius: 12px;
@@ -232,27 +305,23 @@ body.finance-home {
   transition: background 0.2s, color 0.2s;
 }
 
-/* Mint green active pill state for sidebar */
 .side-nav-block.active,
 .side-nav-block[aria-current="page"] {
   background: var(--mint);
   color: #193c32;
 }
 
-/* Muted hover background for inactive sidebar links */
 .side-nav-block:hover:not(.active) {
   background: #274d41;
   color: #ffffff;
 }
 
-/* Fixed-width icon alignment wrapper for sidebar buttons */
 .nav-icon {
   font-size: 15px;
   width: 20px;
   text-align: center;
 }
 
-/* Bottom summary quote container pinned to sidebar base */
 .side-bottom {
   margin-top: auto;
   border-top: 1px solid #33594c;
@@ -262,21 +331,17 @@ body.finance-home {
   font-size: 12px;
 }
 
-/* Highlighted headline text in sidebar quote */
 .side-bottom strong {
   color: #f0f7eb;
   display: block;
   margin-bottom: 5px;
 }
 
-/* Main Content Area */
-
-/* Main content column resetting min-width for grid children */
 .main-content {
   min-width: 0;
 }
 
-/* Header greeting row containing title and monthly filter tag */
+/* welcome banner above the top metric cards */
 .welcome-banner {
   display: flex;
   align-items: flex-end;
@@ -285,7 +350,6 @@ body.finance-home {
   gap: 16px;
 }
 
-/* Small uppercase intro label above welcome greeting */
 .welcome-banner .eyebrow {
   color: #6e8477;
   font-size: 10px;
@@ -294,7 +358,6 @@ body.finance-home {
   font-weight: 700;
 }
 
-/* Primary welcome headline */
 .welcome-banner h2 {
   font-size: 30px;
   letter-spacing: -0.8px;
@@ -302,28 +365,13 @@ body.finance-home {
   color: var(--ink);
 }
 
-/* Secondary welcome subtext */
 .welcome-banner p {
   color: var(--text-muted);
   margin: 0;
   font-size: 13px;
 }
 
-/* Rounded month indicator badge on right edge */
-.period-badge {
-  padding: 9px 14px;
-  background: var(--card-bg);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  font-size: 12px;
-  color: var(--ink);
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-/* Cards Common Styles & Cascading Animation*/
-
-/* Base card shell with rounded borders and subtle dropshadow */
+/* shared card shell, hover lift, and staggered fade-in animation */
 .display-card {
   border-radius: 20px;
   overflow: hidden;
@@ -333,18 +381,15 @@ body.finance-home {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Interactive hover elevation lift */
 .display-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 24px rgba(24, 59, 59, 0.1);
 }
 
-/* Cascading slide-and-fade animation trigger */
 .display-card.animate-cascade {
   animation: cardFadeSlide 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Smooth keyframe physics moving card from 18px below to origin */
 @keyframes cardFadeSlide {
   from {
     opacity: 0;
@@ -356,7 +401,6 @@ body.finance-home {
   }
 }
 
-/* Sequential delay timing cascading through cards top to bottom */
 .metrics-grid .display-card:nth-child(1) { animation-delay: 0.05s; }
 .metrics-grid .display-card:nth-child(2) { animation-delay: 0.15s; }
 .metrics-grid .display-card:nth-child(3) { animation-delay: 0.25s; }
@@ -367,90 +411,10 @@ body.finance-home {
 .four-cards-grid .display-card:nth-child(3) { animation-delay: 0.75s; }
 .four-cards-grid .display-card:nth-child(4) { animation-delay: 0.85s; }
 
-/*Metrics Grid (Top 3 Cards)*/
-
-/* Three-column card grid for top balance and cashflow metrics */
-.metrics-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-/* Internal padding for metric summary cards */
-.metric {
-  padding: 20px;
-}
-
-/* Mint green emphasis background for Total Balance primary card */
-.metric.primary {
-  background: var(--mint);
-  border-color: #d2e4b9;
-}
-
-/* Header row inside metric card (label left, badge right) */
-.metric-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: #657469;
-  font-size: 12px;
-}
-
-/* Rounded square symbol icon container */
-.metric-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 9px;
-  background: #f1f4ea;
-  display: grid;
-  place-items: center;
-  font-size: 14px;
-}
-
-/* Icon badge color for primary card */
-.metric.primary .metric-icon {
-  background: #cde2b6;
-}
-
-/* Large numeric monetary figures */
-.amount {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  margin: 16px 0 10px;
-}
-
-/* Percentage change indicator with trend arrow */
-.trend {
-  font-size: 11px;
-  color: #39734d;
-  font-weight: 600;
-}
-
-/* Comparison baseline text ("vs. last month") */
-.trend span {
-  color: var(--text-muted);
-  margin-left: 5px;
-  font-weight: 400;
-}
-
-/*Analysis Grid (SVG Chart + Budget Bars)*/
-
-/* 2-column layout (wide SVG chart left, budget bars right) */
-.analysis-grid {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap: 18px;
-  margin-bottom: 34px;
-}
-
-/* Inner padding for chart and progress container panels */
 .panel {
   padding: 22px;
 }
 
-/* Header bar inside charts for titles and legend dots */
 .panel-heading {
   display: flex;
   align-items: center;
@@ -459,56 +423,22 @@ body.finance-home {
   margin-bottom: 4px;
 }
 
-/* Chart and budget card title text */
 .panel h3 {
   font-size: 16px;
   margin: 0;
   color: var(--ink);
 }
 
-/* Small explanatory caption beneath chart headings */
 .subtext {
   color: var(--text-muted);
   font-size: 11px;
 }
 
-/* Chart key indicating Income vs Expense colors */
-.legend {
-  display: flex;
-  gap: 12px;
-  font-size: 10px;
-  color: var(--text-muted);
-}
-
-/* Circular key color indicator */
-.dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  margin-right: 5px;
-  background: #3d715c;
-}
-
-/* Muted dot for expense indicator */
-.dot.soft {
-  background: #c9dfa7;
-}
-
-/* Pure SVG chart element responsive rendering */
-.chart {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin-top: 14px;
-}
-
-/* Container for individual budget category tracker */
+/* budget overview rows, tracks, and category progress bar colors */
 .budget-row {
   margin-top: 18px;
 }
 
-/* Budget category name and spent amount header */
 .row-label {
   display: flex;
   justify-content: space-between;
@@ -517,13 +447,11 @@ body.finance-home {
   font-weight: 600;
 }
 
-/* Secondary fractional amount display */
 .row-label span {
   color: var(--text-muted);
   font-weight: 400;
 }
 
-/* Background track meter for progress bar */
 .track {
   height: 7px;
   background: #eff1e9;
@@ -531,24 +459,32 @@ body.finance-home {
   overflow: hidden;
 }
 
-/* Active colored progress fill meter */
 .fill {
   height: 100%;
   border-radius: 10px;
   background: #48745e;
+  transition: width 0.4s ease;
 }
 
-/* Gold color variant for shopping progress */
-.fill.gold {
-  background: #d2ac64;
+.fill.track-bills {
+  background: #2e5a44;
 }
 
-/* Pale green variant for groceries progress */
+.fill.track-food,
 .fill.light {
   background: #a8c285;
 }
 
-/* Callout advice box at the bottom of budget overview */
+.fill.track-shopping,
+.fill.gold {
+  background: #d2ac64;
+}
+
+/* turns progress bar red when category spending exceeds its budget cap */
+.fill.over-budget {
+  background: #d32f2f !important;
+}
+
 .budget-note {
   margin-top: 20px;
   font-size: 11px;
@@ -559,101 +495,118 @@ body.finance-home {
   line-height: 1.5;
 }
 
-/*Section Title & 4 Feature Showcase Cards (2x2 Grid)*/
 
-/* Divider bar heading separating charts from feature cards */
-.section-title-wrapper {
+/*John — Period Dropdown, 3 Summary Metric Cards, Trend Colors & Count-Up*/
+
+/* month/year dropdown filter in the top right of the welcome banner */
+.period-selector select {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23183b3b' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  transition: border-color 0.2s ease;
+}
+
+.period-selector select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* 3-column grid for Total Balance, Monthly Income, and Monthly Expenses */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.metric {
+  padding: 20px;
+}
+
+.metric.primary {
+  background: var(--mint);
+  border-color: #d2e4b9;
+}
+
+.metric-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 10px 0 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--line);
-}
-
-/* Section heading title */
-.section-title-wrapper h3 {
-  margin: 0;
-  font-size: 16px;
-  color: var(--ink);
-}
-
-/* Subtitle indicating sprint wireframe context */
-.section-title-wrapper span {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-/* 2x2 grid container holding the 4 feature cards */
-.four-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-  margin-bottom: 30px;
-}
-
-/* Horizontal card container with image left and text right */
-.showcase-card {
-  display: flex;
-  align-items: stretch;
-  gap: 16px;
-  padding: 14px;
-}
-
-/* Fixed container maintaining image aspect ratio without layout shift */
-.card-image-wrapper {
-  width: 130px;
-  min-height: 110px;
-  flex-shrink: 0;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #e8f1ec;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Ensures card images cover container smoothly without distortion */
-.card-image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-/* Vertical text column on right side of showcase card */
-.card-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* Feature card title */
-.card-content h4 {
-  margin: 0 0 6px;
-  font-size: 15px;
-  color: var(--ink);
-  font-weight: 700;
-}
-
-/* Bullet list indent reset */
-.card-content ul {
-  margin: 0;
-  padding-left: 16px;
-}
-
-/* Compact bullet point copy */
-.card-content li {
-  color: var(--text-muted);
+  color: #657469;
   font-size: 12px;
-  line-height: 1.5;
 }
 
-/*Responsive Breakpoints & Motion Safety*/
+.metric-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: #f1f4ea;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+}
 
-/* Medium screen breakpoint: collapse sidebar and 2x2 grid to single column */
+.metric.primary .metric-icon {
+  background: #cde2b6;
+}
+
+/* big dollar figure text and count-up pulse animation */
+.amount {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 16px 0 10px;
+  color: var(--ink);
+  transition: color 0.3s;
+}
+
+.metric.primary .amount {
+  color: #0f3d32;
+}
+
+@keyframes amountPulse {
+  0% { transform: scale(0.95); opacity: 0.6; }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.amount.animating {
+  animation: amountPulse 0.8s ease-out;
+}
+
+/* green/red trend indicators comparing current month against last month */
+.trend {
+  font-size: 11px;
+  color: #39734d;
+  font-weight: 600;
+}
+
+.trend.up {
+  color: #1a7f5a;
+}
+
+.trend.down {
+  color: #c0392b;
+}
+
+.trend span {
+  color: var(--text-muted);
+  margin-left: 5px;
+  font-weight: 400;
+}
+
+/* Shared Response Breakpoints & Reduced Motion*/
+
 @media (max-width: 1080px) {
   .dashboard-body-layout {
     grid-template-columns: 1fr;
@@ -666,15 +619,15 @@ body.finance-home {
   }
 }
 
-/* Mobile screen breakpoint: vertical stacking and image resizing */
 @media (max-width: 768px) {
   .home-header-top {
     flex-direction: column;
     text-align: center;
-    gap: 10px;
+    gap: 12px;
   }
-  .header-spacer {
-    display: none;
+  .header-user-actions {
+    width: 100%;
+    justify-content: center;
   }
   .metrics-grid {
     grid-template-columns: 1fr;
@@ -691,7 +644,6 @@ body.finance-home {
   }
 }
 
-/* Accessibility: disables CSS animations for users requesting reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .display-card {
     animation: none;
@@ -706,14 +658,87 @@ body.finance-home {
   }
 }
 
-/*Footer*/
 
-/* Centered footer bar at page bottom */
-.home-footer {
-  border-top: 1px solid var(--line);
-  padding: 24px 0 12px;
-  text-align: center;
+/* Ming Gui Xiao 4 Feature Showcase Cards*/
+
+.section-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.section-title-wrapper h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.section-title-wrapper span {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* 2x2 grid holding the 4 CashFlow feature cards */
+.four-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.showcase-card {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  padding: 14px;
+}
+
+.card-image-wrapper {
+  width: 130px;
+  min-height: 110px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e8f1ec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-content h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.card-content ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.card-content li {
   color: var(--text-muted);
   font-size: 12px;
-  margin-top: 16px;
+  line-height: 1.5;
 }
+
+
